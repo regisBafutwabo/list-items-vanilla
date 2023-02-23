@@ -1,8 +1,15 @@
 # list-items-vanilla
 This web app generates a list of 100 items that are interactive on hover and click
+
+## How to Run
+
+``` 
+    npm i
+
+    npm run start
+```
+
 ## Main Functions Description
-
-
 
 - `createListItem` : function that creates a list item element, adds some content to it, and attaches event listeners for mouseover, mouseout, and click events.
   
