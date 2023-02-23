@@ -37,8 +37,6 @@ const onOverlayIn = () => {
 
 const onOverlayOut = (event) => {
   try {
-    event.stopPropagation();
-
     const currentItem = document.querySelector('.clicked');
 
     dimmedBackground.style.display = 'none';
