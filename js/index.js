@@ -6,98 +6,97 @@ const dimmedBackground = document.querySelector('.overlay');
 const listItems = [];
 
 const onMouseOver = (event) => {
-    const hoveredItem = event.target;
-    shiftItems({hoveredItem});
+  const hoveredItem = event.target;
+  shiftItems({ hoveredItem });
 };
 
 const onMouseOut = (event) => {
-    const hoveredItem = event.target;
-    shiftItems({hoveredItem, type:"unshift"})
-}
+  const hoveredItem = event.target;
+  shiftItems({ hoveredItem, type: 'unshift' });
+};
 
 const onOverlayIn = () => {
-    try {
-        const currentItem = document.querySelector('.clicked');
+  try {
+    const currentItem = document.querySelector('.clicked');
 
-        currentItem.style.width='500px';
-        currentItem.style.height='500px';
-        currentItem.style.top = '50%'; 
-        currentItem.style.left = '50%';
-        currentItem.style.zIndex = '3';
-        
-        currentItem.style.position = 'fixed';
-        currentItem.style.transform= 'translate(-50%,-50%)';
-        currentItem.style.boxShadow= 'none'
-        currentItem.style.transition = 'position 2s ease, transform 0.5s ease, width 0.5s ease, height 0.5s ease';
-    } catch (error) {
-        alert(`Error in 'onOverlayIn' function: ${error.message}`);
-    }
-}
+    currentItem.style.width = '500px';
+    currentItem.style.height = '500px';
+    currentItem.style.top = '50%';
+    currentItem.style.left = '50%';
+    currentItem.style.zIndex = '3';
+
+    currentItem.style.position = 'fixed';
+    currentItem.style.transform = 'translate(-50%,-50%)';
+    currentItem.style.boxShadow = 'none';
+    currentItem.style.transition =
+      'transform 0.5s ease, width 0.5s ease, height 0.5s ease';
+  } catch (error) {
+    alert(`Error in 'onOverlayIn' function: ${error.message}`);
+  }
+};
 
 const onOverlayOut = (event) => {
-    try {
-        event.stopPropagation();
+  try {
+    event.stopPropagation();
 
-        const currentItem = document.querySelector('.clicked');
+    const currentItem = document.querySelector('.clicked');
 
-        dimmedBackground.style.display = 'none';
+    dimmedBackground.style.display = 'none';
 
-        currentItem.classList.remove('clicked');
-        currentItem.addEventListener('mouseover', onMouseOver);
-        currentItem.addEventListener('mouseout', onMouseOut);
+    currentItem.addEventListener('mouseover', onMouseOver);
+    currentItem.addEventListener('mouseout', onMouseOut);
+    currentItem.addEventListener('click', onClickItem);
 
-        currentItem.style.top= '0';
-        currentItem.style.left= '0';
-        currentItem.style.position = 'relative';
-        currentItem.style.transition = 'position 2s ease, transform 0.5s ease, width 0.5s ease, height 0.5s ease';
+    currentItem.style.top = '0';
+    currentItem.style.left = '0';
+    currentItem.style.position = 'relative';
 
-        shiftItems({hoveredItem: currentItem, type:"unshift"});
-        
-        currentItem.addEventListener('click', onClickItem);
-    } catch (error) {
-        alert(`Error in 'onOverlayOut' function: ${error.message}`)
-    }
-}
+    shiftItems({ hoveredItem: currentItem, type: 'unshift' });
+
+    currentItem.classList.remove('clicked');
+  } catch (error) {
+    alert(`Error in 'onOverlayOut' function: ${error.message}`);
+  }
+};
 
 const onClickItem = (event) => {
-    try {
-        const currentItem = event.target;
-        
-        currentItem.classList.add('clicked');
+  try {
+    const currentItem = event.target;
 
-        currentItem.removeEventListener('click', onClickItem);
-        currentItem.removeEventListener('mouseover', onMouseOver);
-        currentItem.removeEventListener('mouseout', onMouseOut);
+    currentItem.classList.add('clicked');
 
-        dimmedBackground.style.display = 'block';
-        
-        dimmedBackground.addEventListener('click', onOverlayOut);
-        
-        if (window.getComputedStyle(dimmedBackground).display === 'block') {
-            onOverlayIn();
-        }
-    } catch (error) {
-        alert(`Error in 'onClickItem' function: ${error.message}`)
+    currentItem.removeEventListener('click', onClickItem);
+    currentItem.removeEventListener('mouseover', onMouseOver);
+    currentItem.removeEventListener('mouseout', onMouseOut);
+
+    dimmedBackground.style.display = 'block';
+
+    dimmedBackground.addEventListener('click', onOverlayOut);
+
+    if (window.getComputedStyle(dimmedBackground).display === 'block') {
+      onOverlayIn();
     }
-    
-}
+  } catch (error) {
+    alert(`Error in 'onClickItem' function: ${error.message}`);
+  }
+};
 
 const createListItem = (text) => {
-    try {
-        const li = document.createElement('li');
-        li.textContent = text;
+  try {
+    const li = document.createElement('li');
+    li.textContent = text;
 
-        li.classList.add('list-item');
+    li.classList.add('list-item');
 
-        li.addEventListener('mouseover', onMouseOver);
-        li.addEventListener('mouseout', onMouseOut); 
-        li.addEventListener('click', onClickItem);
+    li.addEventListener('mouseover', onMouseOver);
+    li.addEventListener('mouseout', onMouseOut);
+    li.addEventListener('click', onClickItem);
 
-        return li;
-    } catch (error) {
-        alert(`Error in 'createListItem' function: ${error.message}`);
-    }
-}
+    return li;
+  } catch (error) {
+    alert(`Error in 'createListItem' function: ${error.message}`);
+  }
+};
 
 for (let i = 1; i <= MAX_ITEMS; i++) {
   const li = createListItem(`List Item ${i}`);
@@ -105,5 +104,3 @@ for (let i = 1; i <= MAX_ITEMS; i++) {
 }
 
 listContainer.append(...listItems);
-
-
